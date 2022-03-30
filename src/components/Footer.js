@@ -34,3 +34,21 @@ export function FullFooter() {
     </div>
   )
 }
+export function SmallFooter(){
+    return (
+        <div className='bg-gray-800 flex h-20 items-center px-5'>
+            <span className='text-white font-bold text-xl my-3'>Website Name</span>
+            <div className='flex flex-row  mx-10'>
+                <div className='mx-5'>
+                    <FacebookTwoTone fontSize="medium" color="primary"  />
+                </div>
+                <div className='mx-5'>
+                    <Twitter fontSize="medium" color="primary"  />
+                </div>
+                <div className='mx-5'>
+                    <Instagram fontSize="medium" color="primary"  />
+                </div>
+            </div>
+        </div>
+    )
+}
