@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import {AccountCircle,Email,Lock} from '@mui/icons-material';
 import EmailConfirmBanner from '../components/EmailConfirmBanner';
 import { SmallFooter } from '../components/Footer';
+import { Link } from 'react-router-dom';
 export default class SignUpScreen extends Component {
   render() {
     return (
@@ -19,7 +20,7 @@ export default class SignUpScreen extends Component {
                 <span className='font-bold text-4xl text-gray-100'>SignUP</span>
                 <span className='text-sm '>For new Account</span>
                 <div className='mt-20'>
-                <Button variant="contained">LogIN</Button>
+                <Button variant="contained"><Link to={"/login"}> LogIN</Link></Button>
                 <br/>
                 <span className='text-xs text-white'>If Already have Account</span>
                 </div>
