@@ -31,6 +31,12 @@ export default class DashBoard extends Component {
                   and typesetting industry. Lorem Ipsum has been the industry's"
                    link = "/addfaq" />
 								</div>
+                <div className='flex flex-row'>
+									<DashboardCard title = "Manage Departments" description = "Lorem Ipsum is simply dummy text of the printing 
+                  and typesetting industry. Lorem Ipsum has been the industry's"
+                   link = "/faqs" />
+									
+								</div>
 							</div>
             </div>
           </div>

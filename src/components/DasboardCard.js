@@ -6,9 +6,9 @@ export default function DasboardCard(props) {
   return (
     <div className='card'>
 			<a href={props.link}>
-				<Paper elevation={3} className="card1" >
+				<Paper elevation={3} className="card1">
 					<span className='font-bold text-2xl'>{props.title}</span>
-					<p className="small text-sm w-60" >{props.description}</p>
+					<p className="small text-sm w-60">{props.description}</p>
 					<div className="go-corner"></div>
 				</Paper>
 			</a>
