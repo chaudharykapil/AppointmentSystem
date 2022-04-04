@@ -22,23 +22,18 @@ code {
 
   transition: all 0.3s ease-out;
 
-  h3 {
+  span {
     color: #262626;
-    font-size: 17px;
     line-height: 24px;
     font-weight: 700;
     margin-bottom: 4px;
   }
 
   p {
-    font-size: 17px;
+
     font-weight: 400;
     line-height: 20px;
     color: #666666;
-
-    &.small {
-      font-size: 14px;
-    }
   }
 
   .go-corner {
@@ -100,7 +95,7 @@ code {
       transition: all 0.3s ease-out;
       color: rgba(255, 255, 255, 0.8);
     }
-    h3 {
+    span {
       transition: all 0.3s ease-out;
       color: #ffffff;
     }
