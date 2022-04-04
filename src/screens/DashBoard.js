@@ -16,12 +16,20 @@ export default class DashBoard extends Component {
             <div className=''>
 							<div className='flex flex-col justify-center items-center'>
 								<div className='flex flex-row'>
-									<DashboardCard title = "Show Appointment" description = "" link = "#"  />
-									<DashboardCard title = "Manage Setting" description = "" link = "#" />
+									<DashboardCard title = "Show Appointment" description = "Lorem Ipsum is simply dummy text of the printing 
+                  and typesetting industry. Lorem Ipsum has been the industry's"
+                   link = "#"  />
+									<DashboardCard title = "Manage Setting" description = "Lorem Ipsum is simply dummy text of the printing 
+                  and typesetting industry. Lorem Ipsum has been the industry's"
+                   link = "#" />
 								</div>
 								<div className='flex flex-row'>
-									<DashboardCard title = "Show FAQs" description = "" link = "/faqs" />
-									<DashboardCard title = "Add FAQs" description = "" link = "/addfaq" />
+									<DashboardCard title = "Show FAQs" description = "Lorem Ipsum is simply dummy text of the printing 
+                  and typesetting industry. Lorem Ipsum has been the industry's"
+                   link = "/faqs" />
+									<DashboardCard title = "Add FAQs" description = "Lorem Ipsum is simply dummy text of the printing 
+                  and typesetting industry. Lorem Ipsum has been the industry's"
+                   link = "/addfaq" />
 								</div>
 							</div>
             </div>
