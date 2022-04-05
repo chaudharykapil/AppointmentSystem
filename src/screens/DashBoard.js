@@ -10,30 +10,26 @@ export default class DashBoard extends Component {
               <Header/>
           </div>
           <div className='flex flex-col'>
-            <div className='flex h-24 bg-blue-500 items-center p-5'>
-              <span className='text-white font-semibold text-3xl'>Comapany/Departmant Name</span>
+            <div className='flex flex-col h-24 bg-blue-500 justify-center p-5'>
+              <span className='text-white font-semibold text-3xl'>IIUM University</span>
+              <span className='text-white text-xl'>Dashboard</span>
             </div>
             <div className=''>
 							<div className='flex flex-col justify-center items-center'>
 								<div className='flex flex-row'>
-									<DashboardCard title = "Show Appointment" description = "Lorem Ipsum is simply dummy text of the printing 
-                  and typesetting industry. Lorem Ipsum has been the industry's"
+									<DashboardCard title = "Show Appointment" description = "Here You will find all your appointmens and schedules"
                    link = "#"  />
-									<DashboardCard title = "Manage Setting" description = "Lorem Ipsum is simply dummy text of the printing 
-                  and typesetting industry. Lorem Ipsum has been the industry's"
+									<DashboardCard title = "Manage Setting" description = "Manage your personal account setting , scheduling and working hours"
                    link = "#" />
 								</div>
 								<div className='flex flex-row'>
-									<DashboardCard title = "Show FAQs" description = "Lorem Ipsum is simply dummy text of the printing 
-                  and typesetting industry. Lorem Ipsum has been the industry's"
+									<DashboardCard title = "Show FAQs" description = "Show all your FAQs to you and your customers"
                    link = "/faqs" />
-									<DashboardCard title = "Add FAQs" description = "Lorem Ipsum is simply dummy text of the printing 
-                  and typesetting industry. Lorem Ipsum has been the industry's"
+									<DashboardCard title = "Add FAQs" description = "Add more solution to make it easy for your customer"
                    link = "/addfaq" />
 								</div>
                 <div className='flex flex-row'>
-									<DashboardCard title = "Manage Departments" description = "Lorem Ipsum is simply dummy text of the printing 
-                  and typesetting industry. Lorem Ipsum has been the industry's"
+									<DashboardCard title = "Manage Departments" description = "Manage your department and their dashboard"
                    link = "/faqs" />
 									
 								</div>
