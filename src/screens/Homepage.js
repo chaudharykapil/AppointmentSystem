@@ -16,12 +16,12 @@ export default class Homepage extends Component {
 			<div className='flex flex-row bg-home-main-bg w-full h-96'>
 				<div className='flex flex-1 flex-col backdrop-blur-md justify-center px-10'>
 					<div>
-						<p className='text-5xl font-bold text-center text-gray-700'>Where the world<br/>builds software</p>
+						<p className='text-5xl font-bold text-center text-gray-700'>Book Your Appointment<br/>Hassle free...</p>
 						<br/>
 						<p className='text-gray-600 text-center'>
-							Millions of developers and companies build, ship,<br/> 
-							and maintain their software on GitHub—the largest and<br/> 
-							most advanced development platform in the world.
+						To build an appointment system that allows the owner of the<br/> 
+						office to schedule appointments, customer service section where <br/> 
+						the customer can ask questions and a FAQ section
 						</p>
 					</div>
 					<div className='my-5 py-5'>
