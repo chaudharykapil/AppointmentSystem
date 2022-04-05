@@ -435,6 +435,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .min-h-\[80vh\] {
   min-height: 80vh;
 }
+.w-60 {
+  width: 15rem;
+}
 .w-full {
   width: 100%;
 }
@@ -551,6 +554,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-center {
   text-align: center;
 }
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
@@ -563,10 +574,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -574,10 +581,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
-}
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
 }
 .font-bold {
   font-weight: 700;
@@ -628,24 +631,19 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 }
 
-.card h3 {
+.card span {
     color: #262626;
-    font-size: 17px;
     line-height: 24px;
     font-weight: 700;
     margin-bottom: 4px;
   }
 
 .card p {
-    font-size: 17px;
+
     font-weight: 400;
     line-height: 20px;
     color: #666666;
   }
-
-.card p.small {
-      font-size: 14px;
-    }
 
 .card .go-corner {
     display: flex;
@@ -706,7 +704,7 @@ Ensure the default browser behavior of the `hidden` attribute.
       color: rgba(255, 255, 255, 0.8);
     }
 
-.card .card1:hover h3 {
+.card .card1:hover span {
       transition: all 0.3s ease-out;
       color: #ffffff;
     }
