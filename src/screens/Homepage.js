@@ -25,8 +25,11 @@ export default class Homepage extends Component {
 						</p>
 					</div>
 					<div className='my-5 py-5'>
-						<Link to={"/signup"}>
-						<Button variant='contained'>Sign Up</Button>
+						<Link to={"/signup"} className = "mx-2">
+						<Button variant='contained'>Sign Up as Owner</Button>
+						</Link>
+						<Link to={"/user/signup"}  className = "mx-2">
+						<Button variant='contained'>Sign Up as User</Button>
 						</Link>
 					</div>
 				</div>
