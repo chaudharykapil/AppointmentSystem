@@ -44,7 +44,9 @@ export default class SignUpScreen extends Component {
                   <TextField label="Password" variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div>
+                  <Link to = {"/addworking"}>
                   <Button variant='outlined' sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}>Signup</Button>
+                  </Link>
                 </div>
               </div>
             </div>
