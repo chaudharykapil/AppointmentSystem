@@ -2,8 +2,34 @@ import { Button, Paper, TextField } from '@mui/material'
 import React, { Component } from 'react'
 import { SmallFooter } from '../components/Footer'
 import Header from '../components/Header'
-
+import database from "../database/FirebaseApi"
+import { ref, child, get, set, update } from "firebase/database";
+import uuid from 'react-uuid';
 export default class AddFaqScreen extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      ques:"",
+      userid:null,
+      ans:"",
+      redirect:null
+    }
+  }
+  componentDidMount(){
+    let usrid = localStorage.getItem("currorg")
+    this.setState({userid:usrid})
+  }
+  addFAQ = ()=>{
+    let id  = uuid()
+    let data = {
+      ques:this.state.ques,
+      ans:this.state.ans,
+      orgnisation:this.state.userid
+    }
+    set(ref(database,"/FAQs/"+id),data).then(e=>{
+      //this.setState({redirect:"/dashboard"})
+    })
+  }
   render() {
     return (
       <div>
@@ -15,10 +41,10 @@ export default class AddFaqScreen extends Component {
                   <div className='my-3'>
                       <span className='text-2xl font-bold'>Add FAQs Questions</span>
                   </div>
-                    <TextField variant='outlined' label = "Your Question" sx={{width:"80%",marginY:"0.2rem"}} />
-                    <TextField variant='outlined' multiline minRows={4} label = "Your Answer" sx={{width:"80%",marginY:"0.2rem"}} />
+                    <TextField variant='outlined' onChange={(evt)=>this.setState({ques:evt.target.value})} label = "Your Question" sx={{width:"80%",marginY:"0.2rem"}} />
+                    <TextField variant='outlined' onChange={(evt)=>this.setState({ans:evt.target.value})} multiline minRows={4} label = "Your Answer" sx={{width:"80%",marginY:"0.2rem"}} />
                     <div className='flex flex-row-reverse items-end  w-4/5'>
-                        <Button variant='contained'>Post</Button>
+                        <Button onClick = {this.addFAQ} variant='contained'>Post</Button>
                     </div>
               </Paper>
           </div>

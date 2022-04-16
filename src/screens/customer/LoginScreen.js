@@ -4,9 +4,51 @@ import Header from '../../components/Header'
 import TextField from '@mui/material/TextField';
 import {Email,Lock} from '@mui/icons-material';
 import { SmallFooter } from '../../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
+import database from "../../database/FirebaseApi"
+import { ref, child, get, set } from "firebase/database";
 export default class UserLoginScreen extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      email:"",
+      password:"",
+      redirect:null
+    }
+  }
+  componentDidMount(){
+    let userid = localStorage.getItem("curruser")
+    if(userid){
+      this.setState({redirect:"/viewlist"})
+    }
+  }
+  handleEmail = (evt)=>{
+    this.setState({email:evt.target.value})
+  }
+  handlePassword = (evt)=>{
+    this.setState({password:evt.target.value})
+  }
+  submitform=(evt)=>{
+    let data = {
+      email:this.state.email,
+      password:this.state.password
+    }
+    get(child(ref(database),"/customers")).then(e=>{
+      let allusers = e.val()
+      console.log(allusers)
+      for(let key in allusers){
+        if(allusers[key].email == data.email && allusers[key].password == data.password){
+          localStorage.setItem("curruser",key)
+          this.setState({redirect:"/viewlist"})
+          return
+        }
+      }
+    })
+  }
   render() {
+    if (this.state.redirect) {
+      return <Navigate to={this.state.redirect} />
+    }
     return (
       <div>
         <div>
@@ -27,14 +69,14 @@ export default class UserLoginScreen extends Component {
               <div className='flex flex-col justify-center items-center w-3/5 h-full'>
                 <div className='flex flex-row'>
                   <Email sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Email" variant="standard" sx={{width:"18rem"}} />
+                  <TextField label="Email" onChange={this.handleEmail} variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Lock sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Password" variant="standard" sx={{width:"18rem"}} />
+                  <TextField label="Password"  onChange={this.handlePassword} type="password" variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div>
-                  <Button variant='outlined' sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}><Link to={"/viewlist"}>LogIn</Link></Button>
+                  <Button onClick={this.submitform} variant='outlined' sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}>LogIn</Button>
                 </div>
               </div>
             </div>

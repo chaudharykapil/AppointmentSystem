@@ -2,8 +2,44 @@ import React, { Component } from 'react'
 import FaqQuestion from '../components/FaqQuestion'
 import { SmallFooter } from '../components/Footer'
 import Header from '../components/Header'
-
+import database from "../database/FirebaseApi"
+import { ref, child, get, set } from "firebase/database";
 export default class FaqScreen extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      orgid:null,
+      faqs:[]
+    }
+  }
+  componentDidMount(){
+    this.getorgid()
+  }
+  getorgid = ()=>{
+    let id = localStorage.getItem("currorg")
+    if(!id){
+      id = localStorage.getItem("selectorg")
+    }
+    if(!id){}
+    else{
+      this.setState({orgid:id})
+    }
+    this.getFAQS()
+  }
+
+  getFAQS = ()=>{
+    get(child(ref(database),"/FAQs")).then(e=>{
+      console.log(e.val())
+      let temp = []
+      for(let key in e.val()){
+        if(e.val()[key].orgnisation == this.state.orgid){
+          temp.push(e.val()[key])
+        }
+      }
+      this.setState({faqs:temp})
+    })
+  }
+
   render() {
     return (
       <div>
@@ -16,7 +52,7 @@ export default class FaqScreen extends Component {
               </div>
               <div className='flex flex-col h-full py-20 justify-start items-center'>
                 {
-                    [1,2,3,4,5,6,7,8,9,10].map((val,idx)=><FaqQuestion />)
+                    this.state.faqs.map((val,idx)=><FaqQuestion ques = {val.ques} ans = {val.ans} />)
                 }
               </div>
           </div>

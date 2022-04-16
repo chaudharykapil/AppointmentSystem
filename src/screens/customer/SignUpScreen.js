@@ -5,8 +5,59 @@ import TextField from '@mui/material/TextField';
 import {AccountCircle,Email,Lock} from '@mui/icons-material';
 import EmailConfirmBanner from '../../components/EmailConfirmBanner';
 import { SmallFooter } from '../../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import database from "../../database/FirebaseApi"
+import { ref, child, get, set } from "firebase/database";
+import uuid from 'react-uuid';
 export default class UserSignUpScreen extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      firstname:"",
+      lastname:"",
+      email:"",
+      password:"",
+      redirect:null
+    }
+  }
+  componentDidMount(){
+    
+  }
+  checkduplicacy = (data,email)=>{
+    for(let key in data){
+      if(data[key].email == email){
+        return false
+      }
+    }
+    return true
+  }
+  handleFirstname = (evt)=>{
+    this.setState({firstname:evt.target.value})
+  }
+  handleLastname = (evt)=>{
+    this.setState({lastname:evt.target.value})
+  }
+  handleEmail = (evt)=>{
+    this.setState({email:evt.target.value})
+  }
+  handlePassword = (evt)=>{
+    this.setState({password:evt.target.value})
+  }
+  submitform=(evt)=>{
+    let data = {
+      firstname:this.state.firstname,
+      lastname:this.state.lastname,
+      email:this.state.email,
+      password:this.state.password
+    }
+    get(child(ref(database),"/customers")).then(e=>{
+      if (this.checkduplicacy(e.val())){
+        let id  = uuid()
+        set(ref(database,"/customers/"+id),data).then(e=>{
+        })
+      }
+    })
+  }
   render() {
     return (
       <div>
@@ -29,24 +80,24 @@ export default class UserSignUpScreen extends Component {
                 
                 <div className='flex flex-row'>
                   <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="First Name" variant="standard" sx={{width:"18rem"}} />
+                  <TextField label="First Name" onChange={this.handleFirstname} variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="First Name" variant="standard" sx={{width:"18rem"}} />
+                  <TextField label="Last Name" onChange={this.handleLastname} variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Email sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Email" variant="standard" sx={{width:"18rem"}} />
+                  <TextField label="Email" onChange={this.handleEmail} variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Lock sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Password" variant="standard" sx={{width:"18rem"}} />
+                  <TextField label="Password" type="password" onChange={this.handlePassword} variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div>
-                  <Link to = {"/addworking"}>
-                  <Button variant='outlined' sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}>Signup</Button>
-                  </Link>
+                  
+                  <Button variant='outlined' onClick={this.submitform} sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}>Signup</Button>
+                  
                 </div>
               </div>
             </div>

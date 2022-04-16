@@ -2,8 +2,39 @@ import { Button, MenuItem, TextField } from '@mui/material'
 import React, { Component } from 'react'
 import { SmallFooter } from '../../components/Footer'
 import Header from '../../components/Header'
-
+import database from "../../database/FirebaseApi"
+import { ref, child, get, set } from "firebase/database";
+import { Link } from 'react-router-dom'
+import MakeAppointment from './MakeAppointment'
 export default class ViewList extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      allorgs:[],
+      orgid:null,
+      showappointment:false
+    }
+  }
+  componentDidMount(){
+    this.getAllOrganisation()
+  }
+  getAllOrganisation = ()=>{
+    let temp = []
+    get(child(ref(database),"/organisations")).then(e=>{
+      for(let key in e.val()){
+        temp.push({name:e.val()[key].orgnisation,id:key})
+      }
+      this.setState({allorgs:temp})
+    })
+  }
+  handleInput = (evt)=>{
+    console.log(evt)
+    localStorage.setItem("selectorg",evt.target.value)
+    this.setState({orgid:evt.target.value})
+  }
+  callback = ()=>{
+    this.setState({showappointment:false})
+  }
   render() {
     return (
       <div>
@@ -20,18 +51,26 @@ export default class ViewList extends Component {
                 sx={{width:"40%"}}
                   select
                   label="Select"
-                  value={1}
-                  onChange={(evt)=>{}}
+                  value={this.state.orgid}
+                  onChange={this.handleInput}
                   helperText="Please select Organization"
                 >
-                  <MenuItem key={"1"} value={"abc"}>
-                    IIUM University
+                  {this.state.allorgs.map((v,i)=>
+                  <MenuItem key={i} value={v.id}>
+                    {v.name}
                   </MenuItem>
+                  )}
                 </TextField>
               </div>
               <div className='my-2'>
-                <Button  variant='outlined'>Go to Dashboard</Button>
+                <Link to={"/faqs"}><Button  variant='outlined' sx = {{margin:"0.5rem"}}>Show FAQs</Button></Link>
+                <Button  variant='outlined' onClick={()=>this.setState({showappointment:true})} sx = {{margin:"0.5rem"}}>Make an Appointment</Button>
               </div>
+            </div>
+            <div className='flex w-full justify-center'>
+              {this.state.showappointment?
+              <MakeAppointment callback = {this.callback} />:null
+              }
             </div>
           </div>
           <SmallFooter />

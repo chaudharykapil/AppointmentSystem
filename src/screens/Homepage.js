@@ -4,7 +4,13 @@ import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import {FullFooter} from "../components/Footer"
 import CountUp from 'react-countup';
+import database from "../database/FirebaseApi"
+import { ref, child, get, set } from "firebase/database";
+import { showMessagge } from '../components/message'
 export default class Homepage extends Component {
+	componentDidMount(){
+		showMessagge()
+	}
   render() {
     return (
     <div>

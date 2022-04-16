@@ -5,9 +5,69 @@ import TextField from '@mui/material/TextField';
 import {AccountCircle,Email,Lock} from '@mui/icons-material';
 import EmailConfirmBanner from '../components/EmailConfirmBanner';
 import { SmallFooter } from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import database from "../database/FirebaseApi"
+import { ref, child, get, set } from "firebase/database";
+import uuid from 'react-uuid';
+import { loadmsg, showMessagge } from '../components/message';
 export default class SignUpScreen extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      orgnisationname:"",
+      
+      email:"",
+      password:"",
+      redirect:null
+    }
+  }
+  componentDidMount(){
+    
+  }
+  checkduplicacy = (data,email)=>{
+    for(let key in data){
+      if(data[key].email == email){
+        return false
+      }
+    }
+    return true
+  }
+  handleOrgname = (evt)=>{
+    this.setState({orgnisationname:evt.target.value})
+  }
+  
+  handleEmail = (evt)=>{
+    this.setState({email:evt.target.value})
+  }
+  handlePassword = (evt)=>{
+    this.setState({password:evt.target.value})
+  }
+  submitform=(evt)=>{
+    let data = {
+      orgnisation:this.state.orgnisationname,
+      email:this.state.email,
+      password:this.state.password
+    }
+    if(data.orgnisation == "" || data.email == "" || data.password == ""){
+      loadmsg("Please complete form")
+      showMessagge()
+      return
+    }
+    get(child(ref(database),"/organisations")).then(e=>{
+      if (this.checkduplicacy(e.val())){
+        let id  = uuid()
+        set(ref(database,"/organisations/"+id),data).then(e=>{
+          localStorage.setItem("newuser",id)
+          this.setState({redirect:"/addworking"})
+          
+        })
+      }
+    })
+  }
   render() {
+    if (this.state.redirect) {
+      return <Navigate to={this.state.redirect} />
+    }
     return (
       <div>
         <div>
@@ -29,30 +89,25 @@ export default class SignUpScreen extends Component {
                 
                 <div className='flex flex-row'>
                   <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="First Name" variant="standard" sx={{width:"18rem"}} />
+                  <TextField onChange={this.handleOrgname} value={this.state.orgnisationname} label="Organisation Name" variant="standard" sx={{width:"18rem"}} />
                 </div>
-                <div className='flex flex-row'>
-                  <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="First Name" variant="standard" sx={{width:"18rem"}} />
-                </div>
+                
                 <div className='flex flex-row'>
                   <Email sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Email" variant="standard" sx={{width:"18rem"}} />
+                  <TextField onChange={this.handleEmail} label="Email" variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Lock sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Password" variant="standard" sx={{width:"18rem"}} />
+                  <TextField type="password" onChange={this.handlePassword} label="Password" variant="standard" sx={{width:"18rem"}} />
                 </div>
                 <div>
-                  <Link to = {"/addworking"}>
-                  <Button variant='outlined' sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}>Signup</Button>
-                  </Link>
+                  <Button variant='outlined' onClick={this.submitform} sx={{":hover":{backgroundColor:"#0073e6",color:"#ffffff"}}}>Signup</Button>
                 </div>
               </div>
             </div>
           </Paper>
           <div className='w-2/3 m-5'>
-            <EmailConfirmBanner />
+            <EmailConfirmBanner email = {this.state.email} />
           </div>
         </div>
         <SmallFooter />
