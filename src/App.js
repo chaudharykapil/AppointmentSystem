@@ -8,6 +8,7 @@ import DashBoard from "./screens/DashBoard";
 import FaqScreen from "./screens/FaqScreen";
 import Homepage from "./screens/Homepage";
 import LoginScreen from "./screens/LoginScreen";
+import ShowAppoitment from "./screens/ShowAppoitment";
 import SignUpScreen from "./screens/SignUpScreen";
 import WorkingDays from "./screens/WorkingDays";
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path= "/addfaq" element = {<AddFaqScreen />} />
         <Route path = "/dashboard" element = {<DashBoard />} />
         <Route path="/viewlist" element = {<ViewList />} />
+        <Route path="/showappointment" element = {<ShowAppoitment />} />
       </Routes>
     </BrowserRouter>
   );

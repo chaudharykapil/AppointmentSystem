@@ -42,13 +42,13 @@ export default class ViewList extends Component {
             <Header />
           </div>
           <div className='flex flex-col h-[40rem]'>
-            <div className='flex h-24 bg-blue-500 items-center p-5'>
-              <span className='text-white font-semibold text-3xl'>Select Organization</span>
+            <div className='flex h-24  items-center p-5'>
+              <span className='text-black font-semibold text-3xl'>Select Organization</span>
             </div>
             <div className='flex flex-col items-center my-5'>
               <div className='flex w-full justify-center'>
                 <TextField
-                sx={{width:"40%"}}
+                  sx={{width:"40%"}}
                   select
                   label="Select"
                   value={this.state.orgid}
@@ -63,8 +63,8 @@ export default class ViewList extends Component {
                 </TextField>
               </div>
               <div className='my-2'>
-                <Link to={"/faqs"}><Button  variant='outlined' sx = {{margin:"0.5rem"}}>Show FAQs</Button></Link>
-                <Button  variant='outlined' onClick={()=>this.setState({showappointment:true})} sx = {{margin:"0.5rem"}}>Make an Appointment</Button>
+                <Link to={"/faqs"}><Button  variant='outlined' sx = {{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"},margin:"0.5rem"}}>Show FAQs</Button></Link>
+                <Button  variant='outlined' onClick={()=>this.setState({showappointment:true})} sx = {{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"},margin:"0.5rem"}}>Make an Appointment</Button>
               </div>
             </div>
             <div className='flex w-full justify-center'>

@@ -47,12 +47,12 @@ export default class FaqScreen extends Component {
               <Header />
           </div>
           <div className='flex flex-col min-h-[80vh]'>
-              <div className='flex h-24 bg-blue-500 items-center p-5'>
-                <span className='text-white font-semibold text-3xl'>Frequently Asked Questions</span>
+              <div className='flex h-24 items-center p-5'>
+                <span className='text-black font-semibold text-3xl'>Frequently Asked Questions</span>
               </div>
               <div className='flex flex-col h-full py-20 justify-start items-center'>
                 {
-                    this.state.faqs.map((val,idx)=><FaqQuestion ques = {val.ques} ans = {val.ans} />)
+                    this.state.faqs.map((val,idx)=><FaqQuestion ques = {val.ques} index = {idx+1} ans = {val.ans} />)
                 }
               </div>
           </div>

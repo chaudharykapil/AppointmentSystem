@@ -51,9 +51,9 @@ export default class WorkingDays extends Component {
           <Header />
         </div>
         <div>
-          <div className='flex flex-col h-24 bg-blue-500 justify-center p-5'>
-            <span className='text-white font-semibold text-3xl'>IIUM University</span>
-            <span className='text-white text-xl'>Add Working Days</span>
+          <div className='flex flex-col h-24 justify-center p-5'>
+            <span className='text-black font-semibold text-3xl'>IIUM University</span>
+            <span className='text-black text-xl'>Add Working Days</span>
           </div>
           <div className='flex flex-col my-5 w-full items-center'>
             <div className='flex flex-col w-2/3'>

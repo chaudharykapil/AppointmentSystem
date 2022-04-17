@@ -14,12 +14,26 @@ export default class AddDepartment extends Component {
       deptname:"",
       userid:null,
       deptname:null,
-      redirect:null
+      redirect:null,
+      user:null
     }
   }
   componentDidMount(){
     let usrid = localStorage.getItem("newuser")
-    this.setState({userid:usrid})
+    if(!usrid){
+      usrid = localStorage.getItem("currorg")  
+    }
+    this.setState({userid:usrid},this.getUser)
+  }
+  getUser = ()=>{
+    let orgid = this.state.userid
+    if(orgid){
+      get(child(ref(database),"/organisations")).then(e=>{
+        let allorganisations = e.val()
+        console.log(allorganisations[orgid])
+        this.setState({user:allorganisations[orgid]})
+      })
+    }
   }
   addDept = ()=>{
     let id  = uuid()
@@ -34,8 +48,8 @@ export default class AddDepartment extends Component {
     }
     set(ref(database,"/departments/"+id),data).then(e=>{
       localStorage.removeItem("newuser")
-      localStorage.setItem("currorg",this.state.userid)
-      this.setState({redirect:"/dashboard"})
+      loadmsg("Depatment added")
+      showMessagge()
     })
   }
   render() {
@@ -48,9 +62,9 @@ export default class AddDepartment extends Component {
           <Header />
         </div>
         <div>
-          <div className='flex flex-col h-24 bg-blue-500 justify-center p-5'>
-            <span className='text-white font-semibold text-3xl'>IIUM University</span>
-            <span className='text-white text-xl'>Add Department</span>
+          <div className='flex flex-col h-24 justify-center p-5'>
+            <span className='text-black font-semibold text-3xl'>{this.state.user?this.state.user.orgnisation:""}</span>
+            <span className='text-black text-xl'>Add Department</span>
           </div>
           <div className='flex justify-center py-2 min-h-[80vh]'>
             <div className='flex flex-col items-center w-full'>

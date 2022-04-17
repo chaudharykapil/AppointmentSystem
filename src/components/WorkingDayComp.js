@@ -34,7 +34,7 @@ export default class WorkingDayComp extends Component {
   }
   handleBeginTime = (evt)=>{
     let temptime = this.state.selectedTime
-    let day = evt.nativeEvent.path[9].children[0].children[0].children[0].children[0].value
+    let day = evt.nativeEvent.path[5].children[0].children[0].children[0].value
     let time = evt.target.value
     if(!temptime[day]){
       temptime[day] = {}
@@ -45,7 +45,9 @@ export default class WorkingDayComp extends Component {
   }
   handleEndTime = (evt)=>{
     let temptime = this.state.selectedTime
-    let day = evt.nativeEvent.path[9].children[0].children[0].children[0].children[0].value
+    
+    let day = evt.nativeEvent.path[5].children[0].children[0].children[0].value
+    console.log(day)
     let time = evt.target.value
     if(!temptime[day]){
       temptime[day] = {}
@@ -60,21 +62,20 @@ export default class WorkingDayComp extends Component {
     return (
         <>
         {this.state.days.map((day,ind)=>(
-            <Accordion sx = {{width:"70%",margin:"0.5rem"}}>
-              <AccordionSummary
-              expandIcon={<ExpandMore />}
-              className = "flex justify-center"
-              >
+          <div className='flex justify-center '>
+            <div className=' flex justify-start m-2'>
+              <div className = "flex items-center mx-2">
                 <Checkbox onChange={this.handleDays} value = {day} />
                 {day}
-              </AccordionSummary>
-              <AccordionDetails>
+              </div>
+              <div>
                 <div className='grid grid-cols-4 gap-2'>
                   <TextField type = "time" onChange={this.handleBeginTime} />
                   <TextField type = "time" onChange={this.handleEndTime} />        
                 </div>
-              </AccordionDetails>
-            </Accordion>
+              </div>
+            </div>
+          </div>
             ))}
         </>
     )

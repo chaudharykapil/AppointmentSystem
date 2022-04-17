@@ -4,6 +4,7 @@ import { SmallFooter } from '../components/Footer'
 import Header from '../components/Header'
 import database from "../database/FirebaseApi"
 import { ref, child, get, set, update } from "firebase/database";
+import {showMessagge, loadmsg} from "../components/message";
 import uuid from 'react-uuid';
 export default class AddFaqScreen extends Component {
   constructor(props){
@@ -27,7 +28,8 @@ export default class AddFaqScreen extends Component {
       orgnisation:this.state.userid
     }
     set(ref(database,"/FAQs/"+id),data).then(e=>{
-      //this.setState({redirect:"/dashboard"})
+      loadmsg("FAQ added")
+      showMessagge()
     })
   }
   render() {
