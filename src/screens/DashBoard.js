@@ -5,6 +5,7 @@ import { SmallFooter } from '../components/Footer'
 import database from "../database/FirebaseApi"
 import {Navigate} from "react-router-dom";
 import { ref, child, get, set } from "firebase/database";
+import { showMessagge } from '../components/message'
 export default class DashBoard extends Component {
   constructor(props){
     super(props)
@@ -15,6 +16,7 @@ export default class DashBoard extends Component {
   }
   componentDidMount(){
     this.getUser()
+    showMessagge()
   }
   getUser = ()=>{
     let orgid = localStorage.getItem("currorg")

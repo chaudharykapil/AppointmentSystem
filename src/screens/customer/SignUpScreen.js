@@ -9,6 +9,7 @@ import { Link, Navigate } from 'react-router-dom';
 import database from "../../database/FirebaseApi"
 import { ref, child, get, set } from "firebase/database";
 import uuid from 'react-uuid';
+import { loadmsg, showMessagge } from '../../components/message';
 export default class UserSignUpScreen extends Component {
   constructor(props){
     super(props)
@@ -22,7 +23,7 @@ export default class UserSignUpScreen extends Component {
     }
   }
   componentDidMount(){
-    
+    showMessagge()
   }
   checkduplicacy = (data,email)=>{
     for(let key in data){
@@ -51,11 +52,18 @@ export default class UserSignUpScreen extends Component {
       email:this.state.email,
       password:this.state.password
     }
+    if(data.firstname == "" || data.lastname == "" || data.email == "" || data.password == ""){
+      loadmsg("Please complete form")
+      showMessagge()
+      return
+    }
     get(child(ref(database),"/customers")).then(e=>{
       if (this.checkduplicacy(e.val())){
         let id  = uuid()
         set(ref(database,"/customers/"+id),data).then(e=>{
-          this.setState({sendmail:true})
+          loadmsg("Signup Successfull")
+          showMessagge()
+          
         })
       }
     })
@@ -75,34 +83,34 @@ export default class UserSignUpScreen extends Component {
                 </div>
                 <div className='flex flex-row'>
                   <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="First Name" onChange={this.handleFirstname} variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField label="First Name" onChange={this.handleFirstname} required variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Last Name" onChange={this.handleLastname} variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField label="Last Name" onChange={this.handleLastname} required variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Email sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Email" onChange={this.handleEmail} variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField label="Email" onChange={this.handleEmail} variant="outlined" required sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Lock sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Password" type="password" onChange={this.handlePassword} variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField label="Password" type="password" onChange={this.handlePassword} required variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div>
                   <Button variant='outlined' onClick={this.submitform} sx={{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"}}}>Signup</Button>
                 </div>
                 <div className='m-2'>
-                  <span className = "text-sm underline">For Login click <Link to={"/user/login"}>here</Link></span>
+                <Link to={"/user/login"}><span className = "text-sm underline">For Login click here</span></Link>
                 </div>
               </div>
             </div>
           </Paper>
-          <div className='w-2/3 m-5'>
+          {/* <div className='w-2/3 m-5'>
             {this.state.sendmail?
             <EmailConfirmBanner email = {this.state.email} />:null
             }
-          </div>
+          </div> */}
         </div>
         <SmallFooter />
       </div>

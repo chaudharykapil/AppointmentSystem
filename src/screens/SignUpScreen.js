@@ -22,7 +22,7 @@ export default class SignUpScreen extends Component {
     }
   }
   componentDidMount(){
-    
+    showMessagge()
   }
   checkduplicacy = (data,email)=>{
     for(let key in data){
@@ -58,9 +58,8 @@ export default class SignUpScreen extends Component {
         let id  = uuid()
         set(ref(database,"/organisations/"+id),data).then(e=>{
           localStorage.setItem("newuser",id)
-          this.setState({sendmail:true})
+          loadmsg("SignUp successfull")
           this.setState({redirect:"/addworking"})
-          
         })
       }
     })
@@ -83,31 +82,31 @@ export default class SignUpScreen extends Component {
                 </div>
                 <div className='flex flex-row'>
                   <AccountCircle sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField onChange={this.handleOrgname} value={this.state.orgnisationname} label="Organisation Name" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField onChange={this.handleOrgname} required value={this.state.orgnisationname} label="Organisation Name" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 
                 <div className='flex flex-row'>
                   <Email sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField onChange={this.handleEmail} label="Email" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField onChange={this.handleEmail} required label="Email" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Lock sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField type="password" onChange={this.handlePassword} label="Password" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField type="password" onChange={this.handlePassword} required label="Password" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div>
                   <Button variant='outlined' onClick={this.submitform} sx={{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"}}}>Signup</Button>
                 </div>
                 <div className='m-2'>
-                  <span className = "text-sm underline">For Login click <Link to={"/login"}>here</Link></span>
+                <Link to={"/login"}><span className = "text-sm underline">For Login click here</span></Link>
                 </div>
               </div>
             </div>
           </Paper>
-          <div className='w-2/3 m-5'>
+          {/* <div className='w-2/3 m-5'>
             {this.state.sendmail?
             <EmailConfirmBanner email = {this.state.email} />:null
             }
-          </div>
+          </div> */}
         </div>
         <SmallFooter />
       </div>

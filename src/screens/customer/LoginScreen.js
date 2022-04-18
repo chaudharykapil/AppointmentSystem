@@ -7,6 +7,7 @@ import { SmallFooter } from '../../components/Footer';
 import { Link, Navigate} from 'react-router-dom';
 import database from "../../database/FirebaseApi"
 import { ref, child, get, set } from "firebase/database";
+import { loadmsg, showMessagge } from '../../components/message';
 export default class UserLoginScreen extends Component {
   constructor(props){
     super(props)
@@ -21,6 +22,7 @@ export default class UserLoginScreen extends Component {
     if(userid){
       this.setState({redirect:"/viewlist"})
     }
+    showMessagge()
   }
   handleEmail = (evt)=>{
     this.setState({email:evt.target.value})
@@ -33,13 +35,31 @@ export default class UserLoginScreen extends Component {
       email:this.state.email,
       password:this.state.password
     }
+    if(data.email == "" || data.password == ""){
+      loadmsg("Please Fill form completely")
+      showMessagge()
+      return
+    }
     get(child(ref(database),"/customers")).then(e=>{
       let allusers = e.val()
       console.log(allusers)
       for(let key in allusers){
-        if(allusers[key].email == data.email && allusers[key].password == data.password){
-          localStorage.setItem("curruser",key)
-          this.setState({redirect:"/viewlist"})
+        if(allusers[key].email == data.email){
+          if(allusers[key].password == data.password){
+            localStorage.setItem("curruser",key)
+            this.setState({redirect:"/viewlist"})
+            loadmsg("Login Successfull")
+            return
+          }
+          else{
+            loadmsg("Password is wronge")
+            showMessagge()
+            return
+          }
+        }
+        else{
+          loadmsg("Please Signup First")
+          showMessagge()
           return
         }
       }
@@ -64,17 +84,17 @@ export default class UserLoginScreen extends Component {
               <div className='flex flex-col justify-center items-center w-3/5 h-full'>
                 <div className='flex flex-row'>
                   <Email sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Email" onChange={this.handleEmail} variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField label="Email" onChange={this.handleEmail} required variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div className='flex flex-row'>
                   <Lock sx={{ color: 'action.active', mr: 1, my: 2 }} />
-                  <TextField label="Password"  onChange={this.handlePassword} type="password" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
+                  <TextField label="Password" required  onChange={this.handlePassword} type="password" variant="outlined" sx={{width:"18rem",margin:"0.5rem"}} />
                 </div>
                 <div>
                   <Button onClick={this.submitform} variant='outlined' sx={{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"}}}>LogIn</Button>
                 </div>
                 <div className='m-2'>
-                  <span className = "text-sm underline">For SignUp click <Link to={"/user/signup"}>here</Link></span>
+                <Link to={"/user/signup"}><span className = "text-sm underline">For SignUp click here</span></Link>
                 </div>
               </div>
               </div>

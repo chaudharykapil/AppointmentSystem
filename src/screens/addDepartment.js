@@ -49,7 +49,7 @@ export default class AddDepartment extends Component {
     set(ref(database,"/departments/"+id),data).then(e=>{
       localStorage.removeItem("newuser")
       loadmsg("Depatment added")
-      showMessagge()
+      this.setState({redirect:'/dashboard'})
     })
   }
   render() {

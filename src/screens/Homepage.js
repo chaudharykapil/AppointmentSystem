@@ -46,7 +46,7 @@ export default class Homepage extends Component {
 				</div>
 			</div>
 {/*================================================= why us section ============================================*/}
-			<div className='my-5'>
+			<div className='my-5' name = "about">
 			<Paper elevation={3} sx = {{backgroundColor:"#8AA79C"}} className = "flex flex-col h-60 rounded-lg mx-2" >
 				<p className='font-bold text-4xl text-center mt-5 text-white'>Why US</p>
 				<div className='flex flex-row justify-between px-10 items-center my-10'>

@@ -34,8 +34,11 @@ export default class MakeAppointment extends Component {
   getDepts = ()=>{
     get(child(ref(database),"/departments")).then(e=>{
       let temp = []
+      console.log(e.val())
       for(let key in e.val()){
-        temp.push(e.val()[key].name)
+        if(e.val()[key].orgnisation == this.state.orgid){
+          temp.push(e.val()[key].name)
+        }
       }
       console.log(temp)
       this.setState({alldept:temp})
@@ -72,6 +75,7 @@ export default class MakeAppointment extends Component {
         <TextField
         sx = {{marginTop:"2rem"}}
           select
+          required
           label="Select"
           value={this.state.dept}
           onChange={this.handleInput}
@@ -83,14 +87,14 @@ export default class MakeAppointment extends Component {
           </MenuItem>
           )}
           </TextField>
-          <TextField type="text" sx={{width:"30rem",margin:"2rem"}} onChange = {(evt)=>{this.setState({reason:evt.target.value})}}  label = "Reason of Appointment" />
+          <TextField type="text" required sx={{width:"30rem",margin:"2rem"}} onChange = {(evt)=>{this.setState({reason:evt.target.value})}}  label = "Reason of Appointment" />
           <div className='flex flex-row'>
             <div>
-              <TextField type="date" sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({date:evt.target.value})} />
+              <TextField type="date" required sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({date:evt.target.value})} />
             </div>
             <div>
-              <TextField type="time" sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({start:evt.target.value})} />
-              <TextField type="time" sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({end:evt.target.value})} />
+              <TextField type="time" required sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({start:evt.target.value})} />
+              <TextField type="time" required sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({end:evt.target.value})} />
             </div>
           </div>
           <div className='m-2'>
