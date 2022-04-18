@@ -16,9 +16,9 @@ export default class FaqScreen extends Component {
     this.getorgid()
   }
   getorgid = ()=>{
-    let id = localStorage.getItem("currorg")
+    let id = localStorage.getItem("selectorg")
     if(!id){
-      id = localStorage.getItem("selectorg")
+      id = localStorage.getItem("currorg")
     }
     if(!id){}
     else{
@@ -29,7 +29,7 @@ export default class FaqScreen extends Component {
 
   getFAQS = ()=>{
     get(child(ref(database),"/FAQs")).then(e=>{
-      console.log(e.val())
+      console.log(this.state.orgid)
       let temp = []
       for(let key in e.val()){
         if(e.val()[key].orgnisation == this.state.orgid){
