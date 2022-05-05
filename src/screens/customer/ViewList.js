@@ -65,6 +65,7 @@ export default class ViewList extends Component {
               <div className='my-2'>
                 <Link to={"/faqs"}><Button  variant='outlined' sx = {{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"},margin:"0.5rem"}}>Show FAQs</Button></Link>
                 <Button  variant='outlined' onClick={()=>this.setState({showappointment:true})} sx = {{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"},margin:"0.5rem"}}>Make an Appointment</Button>
+                <Link to={"/user/chat"}><Button  variant='outlined' sx = {{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"},margin:"0.5rem"}}>Chat with US</Button></Link>
               </div>
             </div>
             <div className='flex w-full justify-center'>

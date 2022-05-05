@@ -24,6 +24,7 @@ export default function Header() {
             <div className='flex-1 hover:underline'><Link to={"/"}>Home</Link></div>
             <div className='flex-1 hover:underline'><Link to={"/#about"}> About us</Link></div>
             <div className='flex-1 hover:underline'><Link to = {"/viewlist"}>View list</Link></div>
+            {localStorage.getItem("currorg")?<div className='flex-1 hover:underline'><Link to = {"/org/chat"}>Message</Link></div>:null}
             {usr?<div className='flex-1 hover:underline' onClick={()=>{setLogout(true)}}>LogOut</div>:null}
             {logout?<Logout />:null}
           </div>
