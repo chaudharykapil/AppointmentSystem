@@ -23,12 +23,11 @@ export default class UserChatScreen extends Component {
         this.setState({selectorg:s})
         this.setState({userid:u})
         this.getMessages()
+        
     }
     getMessages = ()=>{
         onValue(ref(database,"/messages"),(snap)=>{
-            console.log(snap.val())
-            this.setState({messagelist:this.filtermessages(snap.val())})
-            
+            this.filtermessages(snap.val())
         })   
     }
 
@@ -39,7 +38,7 @@ export default class UserChatScreen extends Component {
                 temp.push(messages[key])
             }
         }
-        return this.insertionSort(temp)
+        this.insertionSort(temp)
     }
     insertionSort = (inputArr)=> {
         let n = inputArr.length;
@@ -54,7 +53,7 @@ export default class UserChatScreen extends Component {
                 }
                 inputArr[j+1] = current;
             }
-        return inputArr;
+        this.setState({messagelist:inputArr})
     }
     sendMessage = ()=>{
         let message = this.state.message
@@ -80,14 +79,14 @@ export default class UserChatScreen extends Component {
           <div className='h-[40rem] '>
               <div className = 'h-[30rem] overflow-y-auto overflow-x-hidden'>
                   {
-                      this.state.messagelist.map((val,idx)=>{
+                      this.state.messagelist.length?this.state.messagelist.map((val,idx)=>{
                           if(val.sender == this.state.userid){
                               return <SenderMsgComp message = {val.message} />
                           }
                           else if(val.reciver == this.state.userid){
                               return <RecieverMsgComp message = {val.message} />
                           }
-                      })
+                      }):null
                   }
               </div>
               <div className='flex flex-row justify-center absolute bottom-0 w-full m-5'>

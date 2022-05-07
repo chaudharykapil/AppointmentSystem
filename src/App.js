@@ -4,6 +4,7 @@ import AddFaqScreen from "./screens/AddFaqScreen";
 import AdminChatScreen from "./screens/ChatScreen";
 import UserChatScreen from "./screens/customer/ChatScreen";
 import UserLoginScreen from "./screens/customer/LoginScreen";
+import MakeAppointment from "./screens/customer/MakeAppointment";
 import UserSignUpScreen from "./screens/customer/SignUpScreen";
 import ViewList from "./screens/customer/ViewList";
 import DashBoard from "./screens/DashBoard";
@@ -28,9 +29,10 @@ function App() {
         <Route path= "/addfaq" element = {<AddFaqScreen />} />
         <Route path = "/dashboard" element = {<DashBoard />} />
         <Route path="/viewlist" element = {<ViewList />} />
+        <Route path = "/makeappointment" element = {<MakeAppointment />} />
         <Route path="/showappointment" element = {<ShowAppoitment />} />
         <Route path="/user/chat" element = {<UserChatScreen />} />
-        <Route path="/chat" element = {<AdminChatScreen />} />
+        <Route path="/org/chat" element = {<AdminChatScreen />} />
       </Routes>
     </BrowserRouter>
   );

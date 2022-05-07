@@ -28,7 +28,6 @@ export default class AdminChatScreen extends Component {
         onValue(ref(database,"/messages"),(snap)=>{
             console.log(snap.val())
             this.setState({messagelist:this.filtermessages(snap.val())})
-            
         })   
     }
 
@@ -77,8 +76,11 @@ export default class AdminChatScreen extends Component {
     return (
       <div>
           <Header />
-          <div className='h-[40rem] '>
-              <div className = 'h-[30rem] overflow-y-auto overflow-x-hidden'>
+          <div className='h-[40rem] flex flex-row'>
+              <div className = 'w-1/3'>
+
+              </div>
+              <div className = 'h-[30rem] w-2/3 overflow-y-auto overflow-x-hidden'>
                   {
                       this.state.messagelist.map((val,idx)=>{
                           if(val.sender == this.state.userid){

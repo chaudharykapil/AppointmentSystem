@@ -3,25 +3,48 @@ import React, { Component } from 'react'
 import database from "../../database/FirebaseApi"
 import { ref, child, get, set } from "firebase/database";
 import uuid from 'react-uuid';
+import { SmallFooter } from '../../components/Footer'
 import { loadmsg, showMessagge } from '../../components/message';
+import Header from '../../components/Header';
+import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 export default class MakeAppointment extends Component {
   constructor(props){
     super(props)
     this.state = {
-      reason:"",
       start:"",
       end:"",
-      date:"",
+      date:new Date(),
       alldept:[],
+      datetimings:{},
+      starttime:[],
+      endtime:[],
       userid:null,
       orgid:null,
-      dept:null
+      dept:null,
     }
   }
+  days = {0:"Sunday",1:"Monday",2:"Tuesday",3:"Wednesday",4:"Thrusday",5:"Friday",6:"Saturday"}
   componentDidMount(){
     this.getuserid()
     this.getOrgid()
     this.getDepts()
+    this.getTimings()
+  }
+  getTimings = ()=>{
+    get(ref(database,"/organisations/")).then(e=>{
+      let org = e.val()[this.state.orgid]
+      let c = {}
+      for(let idx in org["days"]){
+        let day = org["days"][idx]
+        c[day] = org["time"][day]
+      }
+
+      this.setState({datetimings:c})
+      
+    })
   }
   getuserid = ()=>{
     let u = localStorage.getItem("curruser")
@@ -34,30 +57,73 @@ export default class MakeAppointment extends Component {
   getDepts = ()=>{
     get(child(ref(database),"/departments")).then(e=>{
       let temp = []
-      console.log(e.val())
       for(let key in e.val()){
         if(e.val()[key].orgnisation == this.state.orgid){
           temp.push(e.val()[key].name)
         }
       }
-      console.log(temp)
       this.setState({alldept:temp})
     })
   }
+  getDateFromHours = (time)=>{
+    time = time.split(':');
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...time);
+    }
+  ondateChange = (date,isfinish)=>{
+    this.setState({date:date},this.getcurrtiming()) 
+    console.log(this.state.date.getDate())
+  }
+  getcurrtiming = ()=>{
+    let day = this.state.date.getDay()
+    let timerange = this.state.datetimings[this.days[day]]
+    console.log(timerange)
+    let begin = timerange["begin"]
+    let end = timerange["end"]
+    let temp1 = []
+    let temp2 = []
+    let b_h = parseInt(begin.split(":")[0])
+    let b_m = parseInt(begin.split(":")[1])
+    let e_h = parseInt(end.split(":")[0])
+    let e_m = parseInt(end.split(":")[1])
+    for(let x=0;x<e_h-b_h;x++){
+      let t = b_h +x;
+      let p = b_m + 30
+      t =  t+ Math.floor(p/60);
+      let m = p%60;
+      if(b_m <10){
+        let f = String(b_h+x) + ":0" + b_m.toString()
+        temp1.push(f)
+      }
+      else{
+        let f = String(b_h+x) + ":" + b_m.toString()
+        temp1.push(f)
+      }
+      if(m < 10){
+        let g = t.toString() + ":0" + m.toString()
+        temp2.push(g)
+      }
+      else{
+        let g = t.toString() + ":" + m.toString()
+        temp2.push(g)        
+      }
+      console.log(temp1,temp2)
+    }
+    this.setState({starttime:temp1})
+    this.setState({endtime:temp2})
+  }
+
   submit = ()=>{
     let id  = uuid()
     let data = {
       userid:this.state.userid,
       orgid:this.state.orgid,
-      reason:this.state.reason,
-      dept:this.state.dept,
       start:this.state.start,
       end:this.state.end,
-      date:this.state.date
+      date:this.state.date.toDateString()
     }
     console.log(data)
     set(ref(database,"/appointments/"+id),data).then(e=>{
-      this.props.callback()
       loadmsg("Appointment fixed")
       showMessagge()
     })
@@ -67,41 +133,55 @@ export default class MakeAppointment extends Component {
   }
   render() {
     return (
-      <div className='flex flex-col items-center'>
-        <div>
-          <span className='font-semibold text-lg'>Make Appointment</span>
-        </div>
-        <div className='flex flex-col items-center'>
-        <TextField
-        sx = {{marginTop:"2rem"}}
-          select
-          required
-          label="Select"
-          value={this.state.dept}
-          onChange={this.handleInput}
-          helperText="Please select Organization"
-        >
-          {this.state.alldept.map((v,i)=>
-          <MenuItem key={i} value={v}>
-            {v}
-          </MenuItem>
-          )}
-          </TextField>
-          <TextField type="text" required sx={{width:"30rem",margin:"2rem"}} onChange = {(evt)=>{this.setState({reason:evt.target.value})}}  label = "Reason of Appointment" />
-          <div className='flex flex-row'>
-            <div>
-              <TextField type="date" required sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({date:evt.target.value})} />
-            </div>
-            <div>
-              <TextField type="time" required sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({start:evt.target.value})} />
-              <TextField type="time" required sx = {{margin:"0.5rem"}} onChange={(evt)=>this.setState({end:evt.target.value})} />
-            </div>
+      <div>
+        <Header />
+        <div className='flex flex-row h-[40rem]'>
+          <div className = 'w-1/2 h-full'>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Calendar date = {this.state.date} onChange = {this.ondateChange} />
+            </MuiPickersUtilsProvider>
           </div>
-          <div className='m-2'>
-            <Button variant='outlined' sx = {{color:"#8AA79C",borderColor:"#8AA79C",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"}}} onClick={this.submit} >Make an Appointment</Button>
+          <div className = 'w-1/2 flex flex-row justify-around'>
+          <ToggleButtonGroup
+                    color="primary"
+                    value={this.state.start}
+                    onChange = {(e,v)=>this.setState({start:v})}
+                    orientation="vertical"
+                    exclusive
+          >
+            {
+              this.state.starttime.map((v,i)=>{
+                return(
+                  
+                    <ToggleButton sx={{width:"10rem",height:"4rem"}} value={v}>{v}</ToggleButton>
+                )
+              })
+            }
+            </ToggleButtonGroup>
+
+            <ToggleButtonGroup
+                    color="primary"
+                    value={this.state.end}
+                    onChange = {(e,v)=>this.setState({end:v})}
+                    orientation="vertical"
+                    exclusive          
+          >
+            {
+              this.state.endtime.map((v,i)=>{
+                return(
+                    <ToggleButton sx={{width:"10rem",height:"4rem"}} value={v}>{v}</ToggleButton>
+                )
+              })
+            }
+            </ToggleButtonGroup>
           </div>
+          
         </div>
-      </div>
+        <div className='flex m-4 justify-center items-center'>
+            <Button variant='outlined' onClick={this.submit} sx={{color:"#8AA79C",borderColor:"#8AA79C",marginX:"0.5rem",":hover":{backgroundColor:"#8AA79C",color:"#ffffff",borderColor:"#8AA79C"}}}>Make appointment</Button> 
+        </div>
+        <SmallFooter />
+    </div>
     )
   }
 }
