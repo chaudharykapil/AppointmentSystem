@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AboutScreen from "./screens/AboutScreen";
 import AddDepartment from "./screens/addDepartment";
 import AddFaqScreen from "./screens/AddFaqScreen";
 import AdminChatScreen from "./screens/ChatScreen";
@@ -23,6 +24,7 @@ function App() {
         <Route path = "/user/signup" element = {<UserSignUpScreen />} />
         <Route path = "/addworking" element = {<WorkingDays />} />
         <Route path = "/add-department" element = {<AddDepartment />} />
+        <Route path="/about" element = {<AboutScreen />} />
         <Route path= "/login" element = {<LoginScreen />} />
         <Route path= "/user/login" element = {<UserLoginScreen />} />
         <Route path= "/faqs" element = {<FaqScreen />}/>
