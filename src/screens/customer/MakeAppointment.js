@@ -138,7 +138,7 @@ export default class MakeAppointment extends Component {
         <div className='flex flex-row h-[40rem]'>
           <div className = 'w-1/2 h-full'>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Calendar date = {this.state.date} onChange = {this.ondateChange} />
+              <Calendar date = {this.state.date}  onChange = {this.ondateChange} />
             </MuiPickersUtilsProvider>
           </div>
           <div className = 'w-1/2 flex flex-row justify-around'>

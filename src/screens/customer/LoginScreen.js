@@ -35,6 +35,7 @@ export default class UserLoginScreen extends Component {
       email:this.state.email,
       password:this.state.password
     }
+    console.log(data)
     if(data.email == "" || data.password == ""){
       loadmsg("Please Fill form completely")
       showMessagge()
@@ -57,12 +58,10 @@ export default class UserLoginScreen extends Component {
             return
           }
         }
-        else{
-          loadmsg("Please Signup First")
-          showMessagge()
-          return
-        }
+        
       }
+      loadmsg("Please Signup First")
+      showMessagge()
     })
   }
   render() {
