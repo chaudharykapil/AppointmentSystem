@@ -20,6 +20,7 @@ export default class MakeAppointment extends Component {
       alldept:[],
       datetimings:{},
       starttime:[],
+      appoint:{},
       endtime:[],
       userid:null,
       orgid:null,
@@ -32,6 +33,7 @@ export default class MakeAppointment extends Component {
     this.getOrgid()
     this.getDepts()
     this.getTimings()
+    this.getAppointment()
   }
   getTimings = ()=>{
     get(ref(database,"/organisations/")).then(e=>{
@@ -46,6 +48,12 @@ export default class MakeAppointment extends Component {
       
     })
   }
+  getAppointment = () =>{
+    get(ref(database,"/appointments")).then(e=>{
+      console.log(e.val())
+      this.setState({appoint:e.val()})
+    })
+  }
   getuserid = ()=>{
     let u = localStorage.getItem("curruser")
     this.setState({userid:u})
@@ -56,7 +64,7 @@ export default class MakeAppointment extends Component {
   }
   getDepts = ()=>{
     get(child(ref(database),"/departments")).then(e=>{
-      let temp = []
+      let temp = {}
       for(let key in e.val()){
         if(e.val()[key].orgnisation == this.state.orgid){
           temp.push(e.val()[key].name)
@@ -71,13 +79,21 @@ export default class MakeAppointment extends Component {
     return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...time);
     }
   ondateChange = (date,isfinish)=>{
-    this.setState({date:date},this.getcurrtiming()) 
-    console.log(this.state.date.getDate())
+    this.setState({date:date},this.getcurrtiming(date.toDateString()))
   }
-  getcurrtiming = ()=>{
+  check_appoint_date_time = (val,date)=>{
+    
+    for(let key in this.state.appoint){
+      if( this.state.appoint[key].orgid == this.state.orgid && this.state.appoint[key].date == date && this.state.appoint[key].start.split(":")[0] == val){
+        return false;
+      }
+    }
+    return true
+  }
+  getcurrtiming = (date)=>{
+    console.log(date)
     let day = this.state.date.getDay()
     let timerange = this.state.datetimings[this.days[day]]
-    console.log(timerange)
     let begin = timerange["begin"]
     let end = timerange["end"]
     let temp1 = []
@@ -86,33 +102,34 @@ export default class MakeAppointment extends Component {
     let b_m = parseInt(begin.split(":")[1])
     let e_h = parseInt(end.split(":")[0])
     let e_m = parseInt(end.split(":")[1])
+    
     for(let x=0;x<e_h-b_h;x++){
+      console.log(this.state.appoint)
       let t = b_h +x;
       let p = b_m + 30
       t =  t+ Math.floor(p/60);
       let m = p%60;
-      if(b_m <10){
+      if(b_m <10 && this.check_appoint_date_time(b_h +x,date)){
         let f = String(b_h+x) + ":0" + b_m.toString()
         temp1.push(f)
       }
-      else{
+      else if(b_m >=10  && this.check_appoint_date_time(b_h +x,date)){
         let f = String(b_h+x) + ":" + b_m.toString()
         temp1.push(f)
       }
-      if(m < 10){
+      if(m < 10  && this.check_appoint_date_time(b_h +x,date)){
         let g = t.toString() + ":0" + m.toString()
         temp2.push(g)
       }
-      else{
+      else if(m >= 10  && this.check_appoint_date_time(b_h +x,date)){
         let g = t.toString() + ":" + m.toString()
         temp2.push(g)        
       }
-      console.log(temp1,temp2)
     }
+    console.log(temp1,temp2)
     this.setState({starttime:temp1})
     this.setState({endtime:temp2})
   }
-
   submit = ()=>{
     let id  = uuid()
     let data = {
@@ -141,39 +158,49 @@ export default class MakeAppointment extends Component {
               <Calendar date = {this.state.date}  onChange = {this.ondateChange} />
             </MuiPickersUtilsProvider>
           </div>
-          <div className = 'w-1/2 flex flex-row justify-around'>
-          <ToggleButtonGroup
-                    color="primary"
-                    value={this.state.start}
-                    onChange = {(e,v)=>this.setState({start:v})}
-                    orientation="vertical"
-                    exclusive
-          >
-            {
-              this.state.starttime.map((v,i)=>{
-                return(
-                  
-                    <ToggleButton sx={{width:"10rem",height:"4rem"}} value={v}>{v}</ToggleButton>
-                )
-              })
-            }
-            </ToggleButtonGroup>
+          <div className = 'w-1/2 flex flex-row justify-around mt-10'>
+            {this.state.starttime.length?
+            <>
+              <ToggleButtonGroup
+                        color="primary"
+                        value={this.state.start}
+                        onChange = {(e,v)=>this.setState({start:v})}
+                        orientation="vertical"
+                        exclusive
+              >
+                {
+                  this.state.starttime.map((v,i)=>{
+                    return(
+                      
+                        <ToggleButton sx={{width:"10rem",height:"4rem"}} value={v}>{v}</ToggleButton>
+                    )
+                  })
+                }
+                </ToggleButtonGroup>
 
-            <ToggleButtonGroup
-                    color="primary"
-                    value={this.state.end}
-                    onChange = {(e,v)=>this.setState({end:v})}
-                    orientation="vertical"
-                    exclusive          
-          >
-            {
-              this.state.endtime.map((v,i)=>{
-                return(
-                    <ToggleButton sx={{width:"10rem",height:"4rem"}} value={v}>{v}</ToggleButton>
-                )
-              })
+                <ToggleButtonGroup
+                        color="primary"
+                        value={this.state.end}
+                        onChange = {(e,v)=>this.setState({end:v})}
+                        orientation="vertical"
+                        exclusive          
+              >
+                {
+                  this.state.endtime.map((v,i)=>{
+                    return(
+                        <ToggleButton sx={{width:"10rem",height:"4rem"}} value={v}>{v}</ToggleButton>
+                    )
+                  })
+                }
+              </ToggleButtonGroup>
+              </>
+              :
+              <>
+                <div className='flex justify-center items-center'>
+                  No time slot is available for current date or please reselect the date.
+                </div>
+              </>
             }
-            </ToggleButtonGroup>
           </div>
           
         </div>
